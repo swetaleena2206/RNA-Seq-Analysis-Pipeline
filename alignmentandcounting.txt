@@ -1,0 +1,14 @@
+#STAR Index
+
+STAR --runThreadN 4 --runMode genomeGenerate --genomeDir StarIndex/ --genomeFastaFiles /MouseGenome/sequence/MM.fa  --sjdbGTFfile /MouseGenome/Annotation/MM.gtf --sjdbOverhang 100
+
+
+#Star Alignment
+
+STAR --runThreadN 8 --genomeDir /IndexedGenomeDor/ --readFilesIn KO2_1.paired.fq.gz KO2_2.paired.fq.gz --outFileNamePrefix /StarAlignment/KO2_StarAlign --outSAMtype BAM SortedByCoordinate --readFilesCommand gunzip -c --limitBAMsortRAM 1756793772
+
+
+#htseq count
+
+htseq-count -f bam -r pos -a 27 -m intersection-strict --stranded=no -t exon -i exon_id input.bam GRCh37.gtf > counts_exons.txt
+
